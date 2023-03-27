@@ -15,6 +15,7 @@ function ShowTopAiring(result) {
   console.log(result.results);
 
   const animeInfo = document.createElement("div");
+  animeInfo.className = "ImgRow";
 
   for (let i = 0; i < result.results.length; i++) {
 
@@ -26,7 +27,7 @@ function ShowTopAiring(result) {
   const genres = JSON.stringify(result.results[i].genres);
 
   const AnimeInfoInnerHTML = `
-  <div class="${animeId}" onclick="onClickAnime(this.className)">
+  <div class="${animeId} animeCard" onclick="onClickAnime(this.className)">
   <h1>${animeTitle}</h1>
   <div></div>
   <image src="${image}">
@@ -34,8 +35,9 @@ function ShowTopAiring(result) {
   <p>${removeSign(genres)}</p>
   </div>
   `;
+  
   animeEpisodes.innerHTML = AnimeInfoInnerHTML;
-  animeInfo?.appendChild(animeEpisodes);
+  animeInfo.appendChild(animeEpisodes);
   document.querySelector(".animeTopAiring")?.appendChild(animeInfo);
   }
 }
