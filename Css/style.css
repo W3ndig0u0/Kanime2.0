@@ -1,0 +1,61 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  width: 100vw;
+  transition: background 1s ease-in-out;
+}
+
+*,
+*:before,
+*:after {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+
+img {
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+body.active {
+  overflow: hidden;
+}
+
+.animeCard {
+  /* position: relative; */
+  border-radius: 10px;
+  user-select: text;
+  width: 13rem;
+  height: min-content;
+  cursor: pointer;
+}
+
+.animeCard h1{
+  font-size:1.5rem;
+}
+
+.animeCardHolder{
+  height: fit-content;
+  width: fit-content;
+}
+
+.animeCard img {
+  width: 15rem;
+}
+
+.imgRow {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 1rem;
+  margin: 0 auto;
+  height: min-content;
+  justify-items: center;
+}
