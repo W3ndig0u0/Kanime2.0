@@ -1,44 +1,48 @@
-function getAnimeInfo() {
+function getAnimeInfo(animeID) {
   // let animeId = sessionStorage.getItem("AnimeID");
-  const url = "https://api.consumet.org/anime/gogoanime/info/spy-x-family";
+  const url = "https://api.consumet.org/anime/gogoanime/info/";
   
-  fetch(url)
+  fetch(url + animeID)
   .then(response => response.json())
   .then(result => {
     ShowAnimeInfo(result);
   })
 }
 
-function getAnimeVideoAlternaives(animeId) {
-  // const url = "https://api.consumet.org/anime/gogoanime/servers/" + anime + episode;
-  const url = "https://api.consumet.org/anime/gogoanime/servers/spy-x-family-episode-1";
-    
-    fetch(url)
+function getAnimeVideo(animeEpisodeId) {
+const urlDownload = "https://api.consumet.org/anime/gogoanime/watch/";
+const urlPlayer = "https://api.consumet.org/anime/gogoanime/servers/";
+
+    fetch(urlDownload + animeEpisodeId)
     .then(response => response.json())
-    .then(result => {
-      ShowAnimeVideoAlternatives(result, animeId);
-    })
-  }
+    .then(result => ShowAnimeDownload(result)),
 
-function getAnimeVideoPlayer() {
-// const url = "https://api.consumet.org/anime/gogoanime/servers/" + anime + episode;
-const url = "https://api.consumet.org/anime/gogoanime/watch/spy-x-family-episode-1";
-
-//? https://api.consumet.org/anime/gogoanime/watch/{episodeId}?server={serverName}
-
-  fetch(url)
-  .then(response => response.json())
-  .then(result => {
-    ShowAnimeVideoPlayer(result);
-  })
+    fetch(urlPlayer + animeEpisodeId)
+    .then(response => response.json())
+    .then(result => ShowAnimeVideoAlternatives(result))
 }
 
+function onClickEpisode(episodeID){
+  getAnimeVideo(episodeID);
+}
+
+function onClickAnime(animeID){
+  getAnimeInfo(animeID);
+}
+
+// ?Information
 function ShowAnimeInfo(result){
-  console.log(result);
+
+    const animeInfoDiv = document.querySelector(".animeInfo");
+
+    // !Tar bort det gamla infot
+    while (animeInfoDiv?.firstChild) {
+      animeInfoDiv.removeChild(animeInfoDiv.firstChild);
+    }
 
     const animeInfo = document.createElement("div");
-    animeInfo.classList.add("AnimeVideo");
-    const aniemeTitle = result.title;
+    const animeEpisodes= document.createElement("div");
+    const animeTitle = result.title;
     const otherName = result.otherName
 
     const description = result.description
@@ -47,24 +51,30 @@ function ShowAnimeInfo(result){
     const year = result.releaseDate
     const type = result.type
     const image = result.image
-    // const image = result.image
-    var animeGenres = document.createElement("div");
-    animeGenres.classList.add("animeGenres");
+    const genres = JSON.stringify(result.genres);
+    const episodeOne = result.episodes[0].id;
 
-    for (let i = 0; i < result.genres.length; i++) {
-      const genres = result.genres[i];
-      animeGenres.innerHTML = `
+    // ?Episoder knapp
+    for (let i = 0; i < result.episodes.length; i++) {
+      const episode = document.createElement("div");
+
+      const episodeNr = result.episodes[i].number;
+      const episodeID = result.episodes[i].id;
+      const episodeInnerHTML = `
       <div>
-      <p>${genres}</p>
+        <h4>${episodeID}</h4>
+        <button class="${episodeID}" onclick="onClickEpisode(this.className)">${episodeNr}</button>
       </div>
       `;
-      console.log(genres);
-      document.querySelector(".AnimeVideo")?.appendChild(animeGenres);
+
+      episode.innerHTML = episodeInnerHTML;
+      animeEpisodes.appendChild(episode);
+      document.querySelector(".animeInfo")?.appendChild(animeEpisodes);
     }
 
-    const AnimeGenresInnerHTML = `
+    const AnimeInfoInnerHTML = `
     <div>
-    <h1>${aniemeTitle}</h1>
+    <h1>${animeTitle}</h1>
     <p>${description}</p>
     <div></div>
     <image src="${image}">
@@ -73,55 +83,66 @@ function ShowAnimeInfo(result){
     <p>${year}</p>
     <p>${totalEpisodes}</p>
     <p>${type}</p>
+    <p>${removeSign(genres)}</p>
     </div>
     `;
-    animeInfo.innerHTML = AnimeGenresInnerHTML;
-    document.querySelector(".animeGenres")?.appendChild(animeInfo);
+    animeInfo.innerHTML = AnimeInfoInnerHTML;
+    document.querySelector(".animeInfo")?.appendChild(animeInfo);
+    // ?Deafult till ep 1
+    getAnimeVideo(episodeOne);
 }
 
-function ShowAnimeVideoPlayer(result) {
-  console.log(result);
+// ?Ladda ned
+function ShowAnimeDownload(result) {
+  const animeDownloadDiv = document.querySelector(".animeDownload");
 
-    for (let i = 0; i < result.length; i++) {
+    // !Tar bort det gamla infot
+    while (animeDownloadDiv?.firstChild) {
+      animeDownloadDiv.removeChild(animeDownloadDiv.firstChild);
+    }
 
-    const AnimeInfo = document.createElement("div");
-    AnimeInfo.classList.add("AnimeVideo");
-    const animeUrl = result[i].url
-    const streamingService = result[i].name
+    for (let i = 0; i < result.sources.length; i++) {
+    const AnimeDownload = document.createElement("div");
+    const animeUrl = result.sources[i].url
+    const animeQ = result.sources[i].quality
+    const AnimeDInnerHTML = `<a href="${animeUrl}">>${animeQ}</a>`;
 
-    const AnimeInfoInnerHTML = `
-    <div>
-     <h1>${streamingService}</h1>
-     <iframe width="840" height="600" src="${animeUrl}" frameborder="0"></iframe>
-
-    </div>
-    `;
-
-    AnimeInfo.innerHTML = AnimeInfoInnerHTML;
-    document.querySelector(".animeVideo")?.appendChild(AnimeInfo);
+    AnimeDownload.innerHTML = AnimeDInnerHTML;
+    animeDownloadDiv?.appendChild(AnimeDownload);
   }
 }
 
-  function ShowAnimeVideoAlternatives(result, animeId) {
-    console.log(result);
+// ?Alla video spelare
+  function ShowAnimeVideoAlternatives(result) {
+    const animeVideo = document.querySelector(".animeVideo");
+
+    // !Tar bort det gamla infot
+    while (animeVideo?.firstChild) {
+      animeVideo.removeChild(animeVideo.firstChild);
+    }
+
     for (let i = 0; i < result.length; i++) {
-
-    const AnimeInfo = document.createElement("div");
-    AnimeInfo.classList.add("AnimeVideo");
-    const animeUrl = result[i].url
+    const episodesPlay = document.createElement("div");
     const streamingService = result[i].name
-
-    const AnimeInfoInnerHTML = `
+    const animeUrl = result[i].url
+    const episodesPlayHTML = `
     <div>
-     <h1>${streamingService}</h1>
+     <h5>${streamingService}</h5>
+     <iframe src="${animeUrl}" frameborder="0"></iframe>
     </div>
     `;
-    AnimeInfo.innerHTML = AnimeInfoInnerHTML;
-    document.querySelector(".animeVideo")?.appendChild(AnimeInfo);
 
+    episodesPlay.innerHTML = episodesPlayHTML;
+    animeVideo?.appendChild(episodesPlay);
   }
 }
 
-getAnimeInfo();
-getAnimeVideoPlayer();
-getAnimeVideoAlternaives();
+
+// !Tar bort "", [, ] och ,
+function removeSign(genres){
+  const s = genres.replace(/[""]/g, '');
+  const s1 = s.replace("[", '');
+  const s2 = s1.replace("]", '');
+  const s3 = s2.replace(/[,]/g, ' ');
+  return s3
+}
