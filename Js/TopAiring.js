@@ -13,7 +13,6 @@ function getTopAiring(page) {
 
 // ?Alla video spelare
 function ShowTopAiring(result) {
-  console.log(result.results);
 
   const animeInfo = document.createElement("div");
   animeInfo.className = "imgRow";
@@ -43,7 +42,4 @@ function ShowTopAiring(result) {
   }
 }
 
-
-getTopAiring(3);
-getTopAiring(2);
 getTopAiring(1);

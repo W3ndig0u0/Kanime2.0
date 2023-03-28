@@ -9,10 +9,17 @@
 
   <script defer src="./Js/AnimeVideo.js"></script>
   <script defer src="./Js/TopAiring.js"></script>
+  <script defer src="./Js/SearchAnimeGo.js"></script>
   <link rel="stylesheet" href="./Css/style.css">
 
 </head>
 <body>
+  <div class="searching">
+    <input id="animeSearch" class="animeSearch" type="text" placeholder="Search.." type="submit">
+    <button type="button" id="searchBtn" onclick="searchAnime()">Search</button>
+    <div class="searchingShow"></div>
+  </div>
+  
   <div class="animeTopAiring"></div>
 
   <div class="animeInfo"></div>

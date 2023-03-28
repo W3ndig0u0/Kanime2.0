@@ -128,8 +128,8 @@ function ShowAnimeDownload(result) {
     const episodesPlayHTML = `
     <div>
      <h5>${streamingService}</h5>
-     <button class="adsRemoveBtn">L</button>
-     <iframe src="${animeUrl}" sandbox="" frameborder="0" allowfullscreen></iframe>
+     <button name="sandbox" class="adsRemoveBtn">L</button>
+     <iframe name="framez" src="${animeUrl}" frameborder="0" allowfullscreen></iframe>
     </div>
     `;
 
@@ -138,6 +138,23 @@ function ShowAnimeDownload(result) {
   }
 }
 
+//document.addEventListener('DOMContentLoaded', function() {
+//  const button = document.getElementsByName('sandbox')[0];
+//  const iframe = document.getElementsByName('framez')[0];
+//  
+//  if (button == undefined|| iframe == undefined) return;
+//
+//  button.addEventListener('click', function() {
+//    const iframeSrc = iframe.src;
+//    if (iframe.sandbox) {
+//      iframe.removeAttribute('sandbox');
+//    } else {
+//      iframe.sandbox = 'allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation';
+//    }
+//    iframe.src = '';
+//    iframe.src = iframeSrc;
+//  });
+//});
 
 // !Tar bort "", [, ] och ,
 function removeSign(genres){
