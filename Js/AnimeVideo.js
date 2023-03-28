@@ -128,7 +128,8 @@ function ShowAnimeDownload(result) {
     const episodesPlayHTML = `
     <div>
      <h5>${streamingService}</h5>
-     <iframe src="${animeUrl}" frameborder="0"></iframe>
+     <button class="adsRemoveBtn">L</button>
+     <iframe src="${animeUrl}" sandbox="" frameborder="0" allowfullscreen></iframe>
     </div>
     `;
 

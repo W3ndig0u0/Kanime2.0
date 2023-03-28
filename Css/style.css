@@ -53,8 +53,8 @@ body.active {
 
 .imgRow {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 0.8rem;
   margin: 0 auto;
   height: min-content;
   justify-items: center;

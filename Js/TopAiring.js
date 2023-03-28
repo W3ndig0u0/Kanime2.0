@@ -44,5 +44,6 @@ function ShowTopAiring(result) {
 }
 
 
+getTopAiring(3);
 getTopAiring(2);
 getTopAiring(1);
